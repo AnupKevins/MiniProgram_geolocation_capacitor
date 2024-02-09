@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useCallback } from 'react';
+import { Geolocation } from '@capacitor/geolocation';
 
-function App() {
+export default function GeolocationPage() {
+
+  const [loc, setLoc] = useState(null);
+
+  const getCurrentPosition = useCallback(async () => {
+    const coordinates = await Geolocation.getCurrentPosition();
+    setLoc(coordinates);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Geolocation</h1>
+      <p>Your location is:</p>
+      <p>Latitude: {loc?.coords.latitude}</p>
+      <p>Longitude: {loc?.coords.longitude}</p>
+
+      <button onClick={getCurrentPosition}>
+        Get Current Location
+      </button>
     </div>
   );
 }
-
-export default App;
